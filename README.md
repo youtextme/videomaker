@@ -32,9 +32,21 @@ Ship a real repo with a working **30s** render lane that **reuses** [youtextme/p
 | `vendor/prompt-to-video/scripts/shoot_slides.mjs` | Playwright 1920x1080 PNG | called in place |
 | `vendor/prompt-to-video/scripts/tts_sapi.ps1` | Windows SAPI | called in place |
 | `scripts/tts_espeak.sh` | — | Linux/CI local TTS (espeak-ng) |
+| `scripts/factory.sh` | — | idea in (script.json required). ffmpeg cards + vendor Ken Burns. |
 | `scripts/make_slates.sh` | — | FACTORY smoke only. Not Girish's cut. |
 
 Source: https://github.com/youtextme/prompt-to-video (MIT). SKILL.md is vendored.
+
+
+## Factory (idea in)
+
+Girish drops a real idea later as `script.json`. The factory will not invent a topic.
+
+```bash
+scripts/factory.sh example/slate/script.json out/videomaker_ready_30s.mp4
+```
+
+The bundled slate is factory status, not a product story. Missing input exits 2.
 
 ## Render on Linux (this box / CI)
 

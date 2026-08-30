@@ -4,4 +4,5 @@ size=1617599
 video=h264 1920x1080
 audio=aac
 title=videomaker ready
-note=neutral factory slate; not a product story
+lane=make_slates.sh + tts_espeak.sh + build_video.sh
+note=neutral factory slate; ffmpeg cards; not Girish render_30s.sh
