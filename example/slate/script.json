@@ -1,0 +1,42 @@
+[
+  {
+    "id": 1,
+    "variant": "tower",
+    "accent": "#D9A441",
+    "kicker": "VIDEOMAKER",
+    "title": "videomaker ready",
+    "sub": "30-second factory slate",
+    "caption": "Factory slate. Not a product story.",
+    "narration": "Videomaker ready. This is a thirty second factory slate, not a product story."
+  },
+  {
+    "id": 2,
+    "variant": "palace",
+    "accent": "#C73E3A",
+    "kicker": "LANE",
+    "title": "thirty second lane",
+    "sub": "Reuse prompt-to-video",
+    "caption": "Slides, local speech, ffmpeg Ken Burns.",
+    "narration": "The render lane reuses prompt to video. Slides, local speech, ffmpeg Ken Burns."
+  },
+  {
+    "id": 3,
+    "variant": "hanok",
+    "accent": "#2F6D80",
+    "kicker": "TOOLS",
+    "title": "local tools only",
+    "sub": "ffmpeg + espeak or SAPI",
+    "caption": "No paid APIs.",
+    "narration": "Linux uses ffmpeg and espeak. Windows can still use SAPI. No paid APIs."
+  },
+  {
+    "id": 4,
+    "variant": "sunrise",
+    "accent": "#E07A3F",
+    "kicker": "DONE",
+    "title": "done is thirty seconds",
+    "sub": "ffprobe ~30s plus or minus 2",
+    "caption": "A playable mp4 path.",
+    "narration": "Done means ffprobe duration is about thirty seconds, plus or minus two, and the file plays."
+  }
+]

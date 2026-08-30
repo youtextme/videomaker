@@ -1,0 +1,32 @@
+{
+  "$schema": "https://opencode.ai/config.json",
+  "model": "tokennocap/TokenNoCap",
+  "small_model": "tokennocap/TokenNoCap",
+  "autoupdate": false,
+  "disabled_providers": [
+    "xai"
+  ],
+  "provider": {
+    "tokennocap": {
+      "name": "TokenNoCap",
+      "options": {
+        "baseURL": "http://127.0.0.1:8560/v1",
+        "apiKey": "local"
+      },
+      "models": {
+        "TokenNoCap": {
+          "name": "TokenNoCap free-cloud chain",
+          "limit": {
+            "context": 131072,
+            "output": 8192
+          }
+        }
+      },
+      "npm": "@ai-sdk/openai-compatible"
+    }
+  },
+  "permission": {
+    "edit": "allow",
+    "bash": "allow"
+  }
+}

@@ -1,0 +1,2 @@
+Vendored from https://github.com/youtextme/prompt-to-video (MIT) for the 30s factory.
+Do not rewrite the Ken Burns filter in scripts/build_video.ps1.

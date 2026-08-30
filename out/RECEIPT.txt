@@ -1,0 +1,7 @@
+file=out/videomaker_ready_30s.mp4
+duration=30.054362
+size=1617599
+video=h264 1920x1080
+audio=aac
+title=videomaker ready
+note=neutral factory slate; not a product story

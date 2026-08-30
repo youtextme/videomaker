@@ -1,0 +1,11 @@
+node_modules/
+.playwright-mcp/
+frames/*.png
+audio/*.wav
+segs/
+scenes/*.html
+/scenes.json
+/script.json
+.opencode-prompt.txt
+test.txt
+*.log
