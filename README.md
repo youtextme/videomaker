@@ -3,7 +3,7 @@
 **30-second video factory** for Prompt OS. Girish drops an idea later. This repo is the render lane only — not a first video topic.
 
 ```
-Need (idea later) ──► scene JSON ──► slides (Playwright PNG or ffmpeg slate)
+Need (idea later) ──► scene JSON ──► vendor make_slides + shoot_slides (Playwright PNG)
                                       |
            ffmpeg concat + Ken Burns ◄── local TTS (espeak-ng / SAPI)
                                       v
@@ -28,17 +28,17 @@ Ship a real repo with a working **30s** render lane that **reuses** [youtextme/p
 |-----------|----------------|--------|
 | `vendor/prompt-to-video/scripts/build_video.ps1` | Ken Burns zoompan + concat | unchanged vendor copy |
 | `scripts/build_video.ps1` / `scripts/build_video.sh` | same `scale=2304:1296,zoompan=...` | default **4 scenes**, 30s outfile |
-| `scripts/make_slides.mjs` | vendor HTML/SVG slides + mascot | loads `script.json`; no baked product story |
-| `scripts/shoot_slides.mjs` | Playwright 1920x1080 PNG | default 4 scenes |
-| `scripts/tts_sapi.ps1` | Windows SAPI | copied; optional |
+| `vendor/prompt-to-video/scripts/make_slides.mjs` | HTML/SVG slides + mascot | called in place; accepts `script.json` |
+| `vendor/prompt-to-video/scripts/shoot_slides.mjs` | Playwright 1920x1080 PNG | called in place |
+| `vendor/prompt-to-video/scripts/tts_sapi.ps1` | Windows SAPI | called in place |
 | `scripts/tts_espeak.sh` | — | Linux/CI local TTS (espeak-ng) |
-| `scripts/make_slates.sh` | — | ffmpeg PNG fallback when Playwright is missing |
+| `scripts/make_slates.sh` | — | FACTORY smoke only. Not Girish's cut. |
 
 Source: https://github.com/youtextme/prompt-to-video (MIT). SKILL.md is vendored.
 
 ## Render on Linux (this box / CI)
 
-Needs `ffmpeg` and `espeak-ng` (and a font). Playwright is optional.
+Girish cut needs `ffmpeg`, `espeak-ng`, and Playwright. Smoke slates are factory-only.
 
 ```bash
 sudo apt-get install -y ffmpeg espeak-ng fonts-dejavu-core
@@ -56,9 +56,9 @@ scripts/smoke_slate.sh
 
 ```powershell
 winget install Gyan.FFmpeg
-node scripts/make_slides.mjs script.json
-node scripts/shoot_slides.mjs 4
-powershell -File scripts/tts_sapi.ps1 -Rate 3
+node vendor/prompt-to-video/scripts/make_slides.mjs script.json
+node vendor/prompt-to-video/scripts/shoot_slides.mjs 4
+powershell -File vendor/prompt-to-video/scripts/tts_sapi.ps1 -Rate 3
 powershell -File scripts/build_video.ps1
 ffprobe -v error -show_entries format=duration -of csv=p=0 out\videomaker_30s.mp4
 ```

@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
-# Neutral 30s slate — factory status only. Not a product story.
+# FACTORY ONLY. Colored ffmpeg cards. NOT the Girish Ken Burns lane.
+# Girish cut: scripts/render_30s.sh (vendor make_slides + shoot_slides).
 set -euo pipefail
 HERE="$(cd "$(dirname "$0")/.." && pwd)"
 cd "$HERE"

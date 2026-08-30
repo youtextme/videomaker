@@ -1,11 +1,13 @@
 // make_slides.mjs — generates scene HTML files for the explainer video
-import { writeFileSync, mkdirSync } from "node:fs";
+import { writeFileSync, mkdirSync, readFileSync, existsSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 
-const root = dirname(fileURLToPath(import.meta.url));
+import { cwd, argv } from "node:process";
+const root = cwd();
 const outDir = join(root, "scenes");
 mkdirSync(outDir, { recursive: true });
+const jsonPath = argv[2] || join(root, "script.json");
 
 // Edit scenes[] to change the story: id, variant (see skylines), accent hex,
 // kicker, title, sub, caption (on-screen subtitle), narration (spoken text).
@@ -233,6 +235,24 @@ function stars() {
   return out + "</svg>";
 }
 
+if (existsSync(jsonPath)) {
+  const loaded = JSON.parse(readFileSync(jsonPath, "utf8"));
+  if (Array.isArray(loaded) && loaded.length) {
+    scenes.length = 0;
+    for (const [i, s] of loaded.entries()) {
+      scenes.push({
+        id: s.id ?? i + 1,
+        variant: s.variant ?? "tower",
+        accent: s.accent ?? "#D9A441",
+        kicker: s.kicker ?? "VIDEOMAKER",
+        title: s.title ?? "",
+        sub: s.sub ?? "",
+        caption: s.caption ?? s.narration ?? "",
+        narration: s.narration ?? "",
+      });
+    }
+  }
+}
 for (const s of scenes) {
   writeFileSync(join(outDir, `scene${s.id}.html`), html(s));
 }
