@@ -32,7 +32,8 @@ Ship a real repo with a working **30s** render lane that **reuses** [youtextme/p
 | `vendor/prompt-to-video/scripts/shoot_slides.mjs` | Playwright 1920x1080 PNG | called in place |
 | `vendor/prompt-to-video/scripts/tts_sapi.ps1` | Windows SAPI | called in place |
 | `scripts/tts_espeak.sh` | — | Linux/CI local TTS (espeak-ng) |
-| `scripts/factory.sh` | — | idea in (script.json required). ffmpeg cards + vendor Ken Burns. |
+| `scripts/factory.sh` | — | user idea (JSON, `-f`, stdin, or text) → ffmpeg cards + vendor Ken Burns |
+| `scripts/idea_to_script.py` | — | deterministic 4-scene JSON from raw idea text (called by factory.sh) |
 | `scripts/make_slates.sh` | — | FACTORY smoke only. Not Girish's cut. |
 
 Source: https://github.com/youtextme/prompt-to-video (MIT). SKILL.md is vendored.
@@ -40,15 +41,51 @@ Source: https://github.com/youtextme/prompt-to-video (MIT). SKILL.md is vendored
 
 ## Factory (idea in)
 
-Girish drops a real idea later as `script.json`. The factory will not invent a topic.
+User supplies an idea — never hardcoded in repo. `scripts/factory.sh` will not invent a topic.
 
 ```bash
+sudo apt-get install -y ffmpeg espeak-ng fonts-dejavu-core
+
+# existing: script.json path
 scripts/factory.sh example/slate/script.json out/videomaker_ready_30s.mp4
+
+# raw idea from file, stdin, or argument (via idea_to_script.py → same factory lane)
+scripts/factory.sh -f path/to/your_idea.txt -n my_slug out/my_slug.mp4
+scripts/factory.sh -n my_slug "Your idea text here."
+echo "Your idea" | scripts/factory.sh -n my_slug
 ```
 
-The bundled slate is factory status, not a product story. Missing input exits 2.
+Prints `FACTORY_MP4=<absolute path>` and ffprobe lines. The bundled slate is factory status, not a product story. Missing input exits 2.
 
-## Render on Linux (this box / CI)
+Program-evaluable Done:
+
+| Check | Command |
+|-------|---------|
+| duration ∈ [28, 32]s | `ffprobe -v error -show_entries format=duration -of csv=p=0 out/<name>.mp4` |
+| h264 1920×1080 | `ffprobe -v error -select_streams v:0 -show_entries stream=codec_name,width,height -of default=nw=1 out/<name>.mp4` |
+| aac audio | `ffprobe -v error -select_streams a:0 -show_entries stream=codec_name -of default=nw=1 out/<name>.mp4` |
+| path printed | last `FACTORY_MP4=` line from `scripts/factory.sh` |
+
+Automated test (example fixture only — not a product topic):
+
+```bash
+bash tests/render_lane_test.sh
+```
+
+Human checklist:
+
+```bash
+sudo apt-get install -y ffmpeg espeak-ng fonts-dejavu-core
+bash tests/render_lane_test.sh
+# expect: PASS duration=... video=h264,1920,1080 audio=aac
+# expect: PASS mp4=.../out/example_fixture_lane.mp4
+ffprobe -v error -show_entries format=duration -of csv=p=0 out/example_fixture_lane.mp4
+ffprobe -v error -select_streams v:0 -show_entries stream=codec_name,width,height -of default=nw=1 out/example_fixture_lane.mp4
+ffprobe -v error -select_streams a:0 -show_entries stream=codec_name -of default=nw=1 out/example_fixture_lane.mp4
+scripts/factory.sh -f example/idea/fixture.txt -n example_fixture_lane out/example_fixture_lane.mp4
+```
+
+## Render on Linux (Playwright lane)
 
 Girish cut needs `ffmpeg`, `espeak-ng`, and Playwright. Smoke slates are factory-only.
 

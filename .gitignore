@@ -9,3 +9,6 @@ scenes/*.html
 .opencode-prompt.txt
 test.txt
 *.log
+.factory/
+out/*.mp4
+!out/videomaker_ready_30s.mp4
