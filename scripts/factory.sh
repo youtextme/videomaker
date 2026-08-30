@@ -1,24 +1,126 @@
 #!/usr/bin/env bash
-# Local factory: idea in (script.json) → ~30s 1920x1080 h264+aac mp4.
-# Will not invent a topic. Girish Playwright lane is scripts/render_30s.sh.
-# This path: ffmpeg cards via make_slates.sh, Ken Burns assemble via build_video.sh.
+# Local factory: user idea (script.json, -f file, stdin, or text arg) → ~30s mp4.
+# Will not invent a topic. ffmpeg cards + vendor Ken Burns via build_video.sh.
+# Girish Playwright lane remains scripts/render_30s.sh (not used here).
 set -euo pipefail
 HERE="$(cd "$(dirname "$0")/.." && pwd)"
 cd "$HERE"
 
-IDEA="${1:-}"
-OUTFILE="${2:-out/videomaker_30s.mp4}"
+SCRIPT_PATH=""
+OUTFILE="out/videomaker_30s.mp4"
+IDEA_FILE=""
+IDEA_TEXT=""
+NAME=""
 
-if [[ -z "$IDEA" ]]; then
-  echo "factory: need a script.json idea. will not invent a topic." >&2
+usage() {
+  cat >&2 <<'EOF'
+Usage:
+  scripts/factory.sh script.json [outfile.mp4]
+  scripts/factory.sh -f idea.txt [-n slug] [outfile.mp4]
+  scripts/factory.sh -n slug "idea text"
+  echo "idea" | scripts/factory.sh [-n slug] [outfile.mp4]
+EOF
+}
+
+slugify() {
+  python3 - "$1" << 'PY'
+import re, sys
+text = sys.argv[1].lower()
+text = re.sub(r"[^a-z0-9]+", "_", text).strip("_")
+print(text[:48] or "idea")
+PY
+}
+
+while [[ $# -gt 0 ]]; do
+  case "$1" in
+    -f|--file)
+      [[ $# -ge 2 ]] || { echo "factory: missing path after $1" >&2; usage; exit 2; }
+      IDEA_FILE="$2"
+      shift 2
+      ;;
+    -n|--name)
+      [[ $# -ge 2 ]] || { echo "factory: missing slug after $1" >&2; usage; exit 2; }
+      NAME="$2"
+      shift 2
+      ;;
+    -h|--help)
+      usage
+      exit 0
+      ;;
+    --)
+      shift
+      IDEA_TEXT="$*"
+      break
+      ;;
+    -*)
+      echo "factory: unknown option $1" >&2
+      usage
+      exit 2
+      ;;
+    *)
+      if [[ -z "$SCRIPT_PATH" && -z "$IDEA_FILE" && -z "$IDEA_TEXT" ]]; then
+        if [[ -f "$1" ]]; then
+          SCRIPT_PATH="$1"
+          shift
+          [[ $# -gt 0 ]] && OUTFILE="$1" && shift
+        else
+          IDEA_TEXT="$1"
+          shift
+          [[ $# -gt 0 ]] && OUTFILE="$1" && shift
+        fi
+      else
+        OUTFILE="$1"
+        shift
+      fi
+      ;;
+  esac
+done
+
+if [[ $# -gt 0 ]]; then
+  echo "factory: unexpected argument: $*" >&2
+  usage
   exit 2
 fi
-if [[ ! -f "$IDEA" ]]; then
-  echo "factory: missing $IDEA" >&2
+
+RAW_IDEA=""
+if [[ -n "$IDEA_FILE" ]]; then
+  [[ -f "$IDEA_FILE" ]] || { echo "factory: missing $IDEA_FILE" >&2; exit 2; }
+  RAW_IDEA="$(cat "$IDEA_FILE")"
+elif [[ -n "$IDEA_TEXT" ]]; then
+  RAW_IDEA="$IDEA_TEXT"
+elif [[ -z "$SCRIPT_PATH" ]] && [[ ! -t 0 ]]; then
+  RAW_IDEA="$(cat)"
+fi
+
+if [[ -n "$RAW_IDEA" ]]; then
+  RAW_IDEA="$(printf '%s' "$RAW_IDEA" | sed -e 's/^[[:space:]]*//' -e 's/[[:space:]]*$//')"
+  if [[ -z "$RAW_IDEA" ]]; then
+    echo "factory: empty idea. will not invent a topic." >&2
+    exit 2
+  fi
+  mkdir -p .factory
+  GENERATED=".factory/script.json"
+  python3 "$HERE/scripts/idea_to_script.py" -o "$GENERATED" "$RAW_IDEA" >&2
+  SCRIPT_PATH="$GENERATED"
+  if [[ -n "$NAME" ]]; then
+    OUTFILE="out/$(slugify "$NAME").mp4"
+  elif [[ -n "$IDEA_FILE" ]]; then
+    base="$(basename "$IDEA_FILE")"
+    OUTFILE="out/$(slugify "${base%.*}").mp4"
+  fi
+fi
+
+if [[ -z "$SCRIPT_PATH" ]]; then
+  echo "factory: need script.json or a user idea. will not invent a topic." >&2
+  usage
+  exit 2
+fi
+if [[ ! -f "$SCRIPT_PATH" ]]; then
+  echo "factory: missing $SCRIPT_PATH" >&2
   exit 2
 fi
 
-python3 - "$IDEA" << 'PY2'
+python3 - "$SCRIPT_PATH" << 'PY2'
 import json, sys
 from pathlib import Path
 p = Path(sys.argv[1])
@@ -37,7 +139,7 @@ for s in data:
 PY2
 
 mkdir -p out frames audio segs
-cp "$IDEA" script.json
+cp "$SCRIPT_PATH" script.json
 scripts/make_slates.sh . script.json frames
 scripts/tts_espeak.sh . script.json audio
 

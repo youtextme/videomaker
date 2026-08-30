@@ -1,0 +1,3 @@
+EXAMPLE FIXTURE — not Girish's first video topic.
+
+Idea: Videomaker is a local thirty-second factory. You pass any short idea on the command line, through stdin, or from a file. The lane builds four slides, speaks them with espeak or SAPI, and stitches Ken Burns motion with ffmpeg. Done means ffprobe shows about thirty seconds, h264 at ten eighty p, and aac audio.
