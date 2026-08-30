@@ -1,8 +1,8 @@
-file=out/videomaker_ready_30s.mp4
-duration=30.054362
-size=1617599
+file=/workspace/videomaker/out/bike_fall_safety_60s.mp4
+duration=60.055667
+size=2861635
 video=h264 1920x1080
 audio=aac
-title=videomaker ready
-lane=make_slates.sh + tts_espeak.sh + build_video.sh
-note=neutral factory slate; ffmpeg cards; not Girish render_30s.sh
+lane=factory.sh
+reel=/workspace/videomaker/out/bike_fall_safety_60s_reel.mp4
+reel_size=1080x1920

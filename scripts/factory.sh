@@ -63,7 +63,34 @@ PY2
 )
 PAD=$(echo "$PAD" | head -n1)
 scripts/build_video.sh "$PAD" "$SCENES" . "$OUTFILE"
-echo "FACTORY_MP4=$HERE/$OUTFILE"
-ffprobe -v error -show_entries format=duration,size -of default=nw=1 "$OUTFILE"
-ffprobe -v error -select_streams v:0 -show_entries stream=codec_name,width,height -of default=nw=1 "$OUTFILE"
-ffprobe -v error -select_streams a:0 -show_entries stream=codec_name -of default=nw=1 "$OUTFILE"
+
+ABS_OUTFILE="$HERE/$OUTFILE"
+echo "FACTORY_MP4=$ABS_OUTFILE"
+
+DUR_SIZE=$(ffprobe -v error -show_entries format=duration,size -of default=nw=1 "$ABS_OUTFILE")
+VIDEO_CODEC=$(ffprobe -v error -select_streams v:0 -show_entries stream=codec_name,width,height -of default=nw=1 "$ABS_OUTFILE")
+AUDIO_CODEC=$(ffprobe -v error -select_streams a:0 -show_entries stream=codec_name -of default=nw=1 "$ABS_OUTFILE")
+
+echo "$DUR_SIZE"
+echo "$VIDEO_CODEC"
+echo "$AUDIO_CODEC"
+
+DURATION=$(echo "$DUR_SIZE" | grep -E '^duration=' | cut -d= -f2)
+SIZE=$(echo "$DUR_SIZE" | grep -E '^size=' | cut -d= -f2)
+VCODEC=$(echo "$VIDEO_CODEC" | grep -E '^codec_name=' | cut -d= -f2)
+WIDTH=$(echo "$VIDEO_CODEC" | grep -E '^width=' | cut -d= -f2)
+HEIGHT=$(echo "$VIDEO_CODEC" | grep -E '^height=' | cut -d= -f2)
+ACODEC=$(echo "$AUDIO_CODEC" | grep -E '^codec_name=' | cut -d= -f2)
+
+mkdir -p out
+cat > out/RECEIPT.txt <<EOF
+file=$ABS_OUTFILE
+duration=$DURATION
+size=$SIZE
+video=${VCODEC} ${WIDTH}x${HEIGHT}
+audio=$ACODEC
+lane=factory.sh
+EOF
+
+echo "Wrote out/RECEIPT.txt"
+echo "FACTORY_MP4=$ABS_OUTFILE"

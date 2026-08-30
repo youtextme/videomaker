@@ -1,0 +1,82 @@
+[
+  {
+    "id": 1,
+    "variant": "tower",
+    "accent": "#D9A441",
+    "kicker": "RIDE SMART",
+    "title": "falling is training",
+    "sub": "every rider learns",
+    "caption": "Falling is part of riding, not a fail.",
+    "narration": "Hey rider! Even great cyclists fall. Falling is part of learning, not a fail story."
+  },
+  {
+    "id": 2,
+    "variant": "palace",
+    "accent": "#C73E3A",
+    "kicker": "PREVENT",
+    "title": "helmet and check",
+    "sub": "before you roll",
+    "caption": "Helmet snug. Brakes bite. Tires happy.",
+    "narration": "Helmet on every ride. Squeeze both brakes. Check tires, seat, and shoes that grip."
+  },
+  {
+    "id": 3,
+    "variant": "hanok",
+    "accent": "#2F6D80",
+    "kicker": "STEER",
+    "title": "eyes and soft brakes",
+    "sub": "look where you go",
+    "caption": "Bike follows your eyes. Gentle brakes win.",
+    "narration": "Look where you want to go. Soft hands. Squeeze both brakes gently, not one hard yank."
+  },
+  {
+    "id": 4,
+    "variant": "sunrise",
+    "accent": "#E07A3F",
+    "kicker": "AVOID",
+    "title": "skip bad spots",
+    "sub": "be seen, be heard",
+    "caption": "Driveways, doors, earbuds, bright colors.",
+    "narration": "Stop at driveways. Watch car doors. No earbuds. Wear bright colors so you are seen."
+  },
+  {
+    "id": 5,
+    "variant": "tower",
+    "accent": "#D9A441",
+    "kicker": "IF FALLING",
+    "title": "tuck and roll",
+    "sub": "no stiff arms",
+    "caption": "Chin tucked. Arms soft. Roll, don't slap.",
+    "narration": "Going over? Tuck your chin. No stiff arms. Bend and roll like a soft log."
+  },
+  {
+    "id": 6,
+    "variant": "palace",
+    "accent": "#C73E3A",
+    "kicker": "LAND SOFT",
+    "title": "protect your head",
+    "sub": "helmet first",
+    "caption": "Aim for soft ground. Keep the head safe.",
+    "narration": "Aim for grass if you can. Land soft. Protect your head. Helmet stays on for a reason."
+  },
+  {
+    "id": 7,
+    "variant": "hanok",
+    "accent": "#2F6D80",
+    "kicker": "CHECK",
+    "title": "sit and breathe",
+    "sub": "ask a grown-up",
+    "caption": "Dizzy, weird angle, lots of blood: get help.",
+    "narration": "Sit. Breathe. Check body and bike. Dizzy, weird angle, lots of blood, or head feels wrong: get help."
+  },
+  {
+    "id": 8,
+    "variant": "sunrise",
+    "accent": "#E07A3F",
+    "kicker": "RECOVER",
+    "title": "brush off and ride",
+    "sub": "when you are ready",
+    "caption": "Learn one thing. Ride again when ready.",
+    "narration": "Brush off. Learn one thing. Check the bike. Ride again when ready, not as a dare."
+  }
+]
