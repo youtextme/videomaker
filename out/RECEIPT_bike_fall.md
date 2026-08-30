@@ -25,8 +25,14 @@ Playable ~60s (±5s) h264+aac mp4 Instagram-ready teaching a 10-year-old: preven
 ## Killed
 - Remotion, paid APIs, Whisper, deepfake/likeness, YouTube scrapes of real kids, Grok grind for narration body
 
+## Publish (proven GET-200)
+- Landscape mp4: https://github.com/youtextme/videomaker/raw/main/out/bike_fall_safety_60s.mp4
+- Reel 9:16: https://github.com/youtextme/videomaker/raw/main/out/bike_fall_safety_60s_reel.mp4
+- Script: https://raw.githubusercontent.com/youtextme/videomaker/main/example/bike-fall/script.json
+- Commit: 95ff129 on youtextme/videomaker main (public)
+
 ## Blocked
-- (fill after publish attempt)
+- none for publish
 
 ## Instagram re-export
 1. Prefer `out/bike_fall_safety_60s_reel.mp4` (9:16) for Reels upload.
